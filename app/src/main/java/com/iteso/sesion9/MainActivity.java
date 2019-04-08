@@ -3,6 +3,7 @@ package com.iteso.sesion9;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,9 +15,9 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
-import com.iteso.sesion9.tools.Constant;
+import com.iteso.sesion9.tools.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,10 +26,14 @@ public class MainActivity extends AppCompatActivity {
     private FragmentHome fragmentHome;
     private FragmentElectronics fragmentElectronics;
 
+    FloatingActionButton add;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        add = findViewById(R.id.activity_main_action_button);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -44,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         //Relate tabs with view pager content
         tabLayout.setupWithViewPager(mViewPager);
 
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ActivityItem.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     /**
@@ -61,15 +74,15 @@ public class MainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
-                case Constant.FRAGMENT_TECHNOLOGY:
+                case Constants.FRAGMENT_TECHNOLOGY:
                     if (fragmentTechnology == null)
                         fragmentTechnology = new FragmentTechnology();
                     return fragmentTechnology;
-                case Constant.FRAGMENT_HOME:
+                case Constants.FRAGMENT_HOME:
                     if (fragmentHome == null)
                         fragmentHome = new FragmentHome();
                     return fragmentHome;
-                case Constant.FRAGMENT_ELECTRONICS:
+                case Constants.FRAGMENT_ELECTRONICS:
                     if (fragmentElectronics == null)
                         fragmentElectronics = new FragmentElectronics();
                     return fragmentElectronics;
@@ -88,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case Constant.FRAGMENT_TECHNOLOGY:
+                case Constants.FRAGMENT_TECHNOLOGY:
                     return getString(R.string.section1);
-                case Constant.FRAGMENT_HOME:
+                case Constants.FRAGMENT_HOME:
                     return getString(R.string.section2);
-                case Constant.FRAGMENT_ELECTRONICS:
+                case Constants.FRAGMENT_ELECTRONICS:
                     return getString(R.string.section3);
             }
             return null;
@@ -115,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.action_logout:
-                SharedPreferences sharedPreferences = getSharedPreferences(Constant.USER_PREFERENCES, MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFERENCES, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.apply();
@@ -138,18 +151,18 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            case Constant.ACTIVITY_DETAIL:
+            case Constants.ACTIVITY_DETAIL:
                 if(resultCode == RESULT_OK){
                     if(data.getExtras() != null) {
-                        int fragment = data.getExtras().getInt(Constant.EXTRA_FRAGMENT);
+                        int fragment = data.getExtras().getInt(Constants.EXTRA_FRAGMENT);
                         switch (fragment) {
-                            case Constant.FRAGMENT_TECHNOLOGY:
+                            case Constants.FRAGMENT_TECHNOLOGY:
                                 fragmentTechnology.onActivityResult(requestCode, resultCode, data);
                                 break;
-                            case Constant.FRAGMENT_HOME:
+                            case Constants.FRAGMENT_HOME:
                                 fragmentHome.onActivityResult(requestCode, resultCode, data);
                                 break;
-                            case Constant.FRAGMENT_ELECTRONICS:
+                            case Constants.FRAGMENT_ELECTRONICS:
                                 fragmentElectronics.onActivityResult(requestCode, resultCode, data);
                                 break;
                         }
@@ -158,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
 
 }
 

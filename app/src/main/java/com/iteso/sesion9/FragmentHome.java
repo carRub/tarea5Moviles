@@ -10,10 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.iteso.sesion9.beans.ItemProduct;
-import com.iteso.sesion9.tools.Constant;
+import com.iteso.sesion9.database.DataBaseHandler;
+import com.iteso.sesion9.database.ItemProductControl;
+import com.iteso.sesion9.tools.Constants;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,11 @@ import java.util.ArrayList;
 public class FragmentHome extends Fragment {
 
     RecyclerView recyclerView;
+
+    DataBaseHandler db = DataBaseHandler.getInstance(getActivity());
+    ItemProductControl itemProductControl = new ItemProductControl();
+
+    ArrayList<ItemProduct> products;
 
     public FragmentHome() {
         // Required empty public constructor
@@ -48,11 +54,13 @@ public class FragmentHome extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayList<ItemProduct> products = new ArrayList<>();
-        products.add(new ItemProduct(4, "Sabanas", "Zara Home", "Zapopan", "3312345678", "Lorem Ipsum ....", Constant.TYPE_SHEETS));
-        products.add(new ItemProduct(5, "Almohadas", "Zara Home", "Zapopan", "3312345678", "Lorem Ipsum ....", Constant.TYPE_PILLOW));
+        products = itemProductControl.getItemProductsByCategory(Constants.FRAGMENT_HOME, db);
+        /*
+        products.add(new ItemProduct(4, "Sábanas", "Zara Home", "Zapopan", "3312345678", "Lorem Ipsum ....", Constants.TYPE_SHEETS));
+        products.add(new ItemProduct(5, "Almohadas", "Zara Home", "Zapopan", "3312345678", "Lorem Ipsum ....", Constants.TYPE_PILLOW));
+        */
 
-        AdapterProduct adapterProduct = new AdapterProduct(Constant.FRAGMENT_HOME, getActivity(), products);
+        AdapterProduct adapterProduct = new AdapterProduct(Constants.FRAGMENT_HOME, getActivity(), products);
         recyclerView.setAdapter(adapterProduct);
     }
     @Override

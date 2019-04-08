@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.iteso.sesion9.beans.User;
-import com.iteso.sesion9.tools.Constant;
+import com.iteso.sesion9.tools.Constants;
 
 public class ActivityLogin extends AppCompatActivity {
 
@@ -46,7 +46,7 @@ public class ActivityLogin extends AppCompatActivity {
         user.setPassword(password.getText().toString().trim());
         user.setLogged(true);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constant.USER_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.USER_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("USERNAME", user.getName());
         editor.putString("PASSWORD", user.getPassword());

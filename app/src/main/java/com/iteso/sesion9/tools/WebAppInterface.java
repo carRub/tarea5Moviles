@@ -1,4 +1,4 @@
-package com.iteso.sesion9;
+package com.iteso.sesion9.tools;
 
 import android.content.Context;
 import android.webkit.JavascriptInterface;
@@ -7,7 +7,7 @@ import android.widget.Toast;
 public class WebAppInterface {
 
     Context context;
-    WebAppInterface(Context c){
+    public WebAppInterface(Context c){
         context = c;
     }
 

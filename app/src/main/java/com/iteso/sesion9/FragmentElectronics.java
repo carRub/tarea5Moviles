@@ -10,10 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.iteso.sesion9.beans.ItemProduct;
-import com.iteso.sesion9.tools.Constant;
+import com.iteso.sesion9.database.DataBaseHandler;
+import com.iteso.sesion9.database.ItemProductControl;
+import com.iteso.sesion9.tools.Constants;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,10 @@ import java.util.ArrayList;
 public class FragmentElectronics extends Fragment {
 
     RecyclerView recyclerView;
+    DataBaseHandler db = DataBaseHandler.getInstance(getActivity());
+    ItemProductControl itemProductControl = new ItemProductControl();
+
+    ArrayList<ItemProduct> products;
 
     public FragmentElectronics() {
         // Required empty public constructor
@@ -48,11 +53,11 @@ public class FragmentElectronics extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        ArrayList<ItemProduct> products = new ArrayList<>();
-        products.add(new ItemProduct(6, "Refrigerador", "BestBuy", "Zapopan", "3312345678", "Lorem Ipsum ....", Constant.TYPE_REFRIGERATOR));
-        products.add(new ItemProduct(7, "Micro", "Palacio de Hierro", "Zapopan", "3312345678", "Lorem Ipsum ....", Constant.TYPE_MICRO));
+        products = itemProductControl.getItemProductsByCategory(Constants.FRAGMENT_ELECTRONICS, db);
+        //products.add(new ItemProduct(6, "Refrigerador", "BestBuy", "Zapopan", "3312345678", "Lorem Ipsum ....", Constants.TYPE_REFRIGERATOR));
+        //products.add(new ItemProduct(7, "Micro", "Palacio de Hierro", "Zapopan", "3312345678", "Lorem Ipsum ....", Constants.TYPE_MICRO));
 
-        AdapterProduct adapterProduct = new AdapterProduct(Constant.FRAGMENT_ELECTRONICS, getActivity(), products);
+        AdapterProduct adapterProduct = new AdapterProduct(Constants.FRAGMENT_ELECTRONICS, getActivity(), products);
         recyclerView.setAdapter(adapterProduct);
     }
     @Override

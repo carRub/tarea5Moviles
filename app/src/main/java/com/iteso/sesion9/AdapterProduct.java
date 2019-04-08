@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.iteso.sesion9.beans.ItemProduct;
-import com.iteso.sesion9.tools.Constant;
+import com.iteso.sesion9.tools.Constants;
 
 import java.util.ArrayList;
 
 public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHolder> {
+
+    private static final String TAG = "AdapterProduct";
+
     private ArrayList<ItemProduct> mDataSet;
     private Context context;
     private int fragment;
@@ -40,23 +44,32 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        holder.mProductTitle.setText( mDataSet.get(position).getTitle());
-        holder.mProductStore.setText(mDataSet.get(position).getStore());
-        holder.mProductLocation.setText(mDataSet.get(position).getLocation());
-        holder.mProductPhone.setText(mDataSet.get(position).getPhone());
-        switch(mDataSet.get(holder.getAdapterPosition()).getImage()){
-            case Constant.TYPE_MAC:
-                holder.mProductImage.setImageResource(R.drawable.mac); break;
-            case Constant.TYPE_ALIENWARE:
-                holder.mProductImage.setImageResource(R.drawable.alienware); break;
-            case Constant.TYPE_SHEETS:
-                holder.mProductImage.setImageResource(R.drawable.sheets); break;
-            case Constant.TYPE_PILLOW:
-                holder.mProductImage.setImageResource(R.drawable.pillows); break;
-            case Constant.TYPE_REFRIGERATOR:
-                holder.mProductImage.setImageResource(R.drawable.refrigerator); break;
-            case Constant.TYPE_MICRO:
-                holder.mProductImage.setImageResource(R.drawable.micro); break;
+        if(mDataSet.get(position) != null) {
+            holder.mProductTitle.setText(mDataSet.get(position).getTitle());
+            holder.mProductStore.setText(mDataSet.get(position).getStore().getName());
+            holder.mProductLocation.setText(mDataSet.get(position).getStore().getCity().getName());
+            holder.mProductPhone.setText(mDataSet.get(position).getStore().getPhone());
+
+            switch (mDataSet.get(holder.getAdapterPosition()).getImage()) {
+                case Constants.TYPE_MAC:
+                    holder.mProductImage.setImageResource(R.drawable.mac);
+                    break;
+                case Constants.TYPE_ALIENWARE:
+                    holder.mProductImage.setImageResource(R.drawable.alienware);
+                    break;
+                case Constants.TYPE_SHEETS:
+                    holder.mProductImage.setImageResource(R.drawable.sheets);
+                    break;
+                case Constants.TYPE_PILLOW:
+                    holder.mProductImage.setImageResource(R.drawable.pillows);
+                    break;
+                case Constants.TYPE_REFRIGERATOR:
+                    holder.mProductImage.setImageResource(R.drawable.refrigerator);
+                    break;
+                case Constants.TYPE_MICRO:
+                    holder.mProductImage.setImageResource(R.drawable.micro);
+                    break;
+            }
         }
 
         holder.mEventLayout.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +79,9 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                 //        Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(context, ActivityProduct.class);
-                intent.putExtra(Constant.EXTRA_PRODUCT, mDataSet.get(holder.getAdapterPosition()));
-                intent.putExtra(Constant.EXTRA_FRAGMENT, fragment);
-                ((MainActivity) context).startActivityForResult(intent, Constant.ACTIVITY_DETAIL);
+                intent.putExtra(Constants.EXTRA_PRODUCT, mDataSet.get(holder.getAdapterPosition()));
+                intent.putExtra(Constants.EXTRA_FRAGMENT, fragment);
+                ((MainActivity) context).startActivityForResult(intent, Constants.ACTIVITY_DETAIL);
             }
         });
 
@@ -76,7 +89,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL,
-                        Uri.parse("tel:" + mDataSet.get(holder.getAdapterPosition()).getPhone()));
+                        Uri.parse("tel:" + mDataSet.get(holder.getAdapterPosition()).getStore().getPhone()));
                 context.startActivity(intent);
 
             }

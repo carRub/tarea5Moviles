@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.iteso.sesion9.beans.ItemProduct;
-import com.iteso.sesion9.tools.Constant;
+import com.iteso.sesion9.database.DataBaseHandler;
+import com.iteso.sesion9.database.ItemProductControl;
+import com.iteso.sesion9.tools.Constants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +29,9 @@ public class FragmentTechnology extends Fragment {
     RecyclerView recyclerView;
     ArrayList<ItemProduct> products;
     AdapterProduct adapterProduct;
+
+    DataBaseHandler db = DataBaseHandler.getInstance(getActivity());
+    ItemProductControl itemProductControl = new ItemProductControl();
 
     public FragmentTechnology() {
     }
@@ -49,18 +54,23 @@ public class FragmentTechnology extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        products = new ArrayList<>();
-        products.add(new ItemProduct(1, "Mac", "BestBuy", "Zapopan", "3312345678", "Lorem Ipsum ....", Constant.TYPE_MAC));
-        products.add(new ItemProduct(2, "Alienware", "DELL", "Zapopan", "3312345678", "Lorem Ipsum ....", Constant.TYPE_ALIENWARE));
+        products = itemProductControl.getItemProductsByCategory(Constants.FRAGMENT_TECHNOLOGY, db);
 
-        adapterProduct = new AdapterProduct(Constant.FRAGMENT_TECHNOLOGY, getActivity(), products);
+        /*
+        products.add(new ItemProduct(1, "Mac", "BestBuy", "Zapopan", "3312345678", "Lorem Ipsum ....", Constants.TYPE_MAC));
+        products.add(new ItemProduct(2, "Alienware", "DELL", "Zapopan", "3312345678", "Lorem Ipsum ....", Constants.TYPE_ALIENWARE));
+        */
+
+
+
+        adapterProduct = new AdapterProduct(Constants.FRAGMENT_TECHNOLOGY, getActivity(), products);
         recyclerView.setAdapter(adapterProduct);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ItemProduct itemProduct = data.getParcelableExtra(Constant.EXTRA_PRODUCT);
+        ItemProduct itemProduct = data.getParcelableExtra(Constants.EXTRA_PRODUCT);
         Iterator<ItemProduct> iterator = products.iterator();
         int position = 0;
         while(iterator.hasNext()){

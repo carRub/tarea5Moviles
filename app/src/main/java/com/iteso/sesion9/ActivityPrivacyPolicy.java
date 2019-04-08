@@ -2,12 +2,13 @@ package com.iteso.sesion9;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.iteso.sesion9.tools.WebAppInterface;
 
 public class ActivityPrivacyPolicy extends AppCompatActivity implements DialogInterface.OnKeyListener {
 
